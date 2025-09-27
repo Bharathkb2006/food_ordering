@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <h2>Categories</h2>
+  <div class="category-nav">
+    <button onclick="filterBy('All')" class="chip active" id="chip-All">All</button>
+    <button onclick="filterBy('Veg')" class="chip" id="chip-Veg">Veg</button>
+    <button onclick="filterBy('Non-Veg')" class="chip" id="chip-Non-Veg">Non-Veg</button>
+
+  </div>
+
+  <div id="items" class="grid"></div>
+</section>
+{% endblock %}

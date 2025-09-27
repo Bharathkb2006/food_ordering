@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Enter Address</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #fff;
+      color: #333;
+    }
+    h1 { margin-bottom: 20px; }
+    textarea {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background-color: #218838; }
+    .container { max-width: 500px; margin: auto; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Enter Your Delivery Address</h1>
+    <form id="address-form">
+      <textarea id="address" placeholder="Enter your full address..." required rows="4"></textarea>
+      <br>
+      <button type="submit">Confirm Address</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('address-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const address = document.getElementById('address').value.trim();
+  if (!address) {
+    alert('Address is required!');
+    return;
+  }
+
+  // Send the address to Flask via POST
+  try {
+    const res = await fetch('/submit_order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address })
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      // Clear local cart and redirect to order confirmed
+      localStorage.removeItem('cart');
+      window.location.href = '/order_confirmed';
+    } else {
+      alert('Failed to submit order.');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Error submitting order.');
+  }
+});
+
+  </script>
+</body>
+</html>

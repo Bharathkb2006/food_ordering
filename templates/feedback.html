@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section narrow">
+  <h2>Feedback & Reviews</h2>
+  <p class="muted">We appreciate your feedback — it helps us improve.</p>
+
+  <form id="review-form" onsubmit="submitReview(event)">
+    <label>Your name<input id="rev-name" placeholder="Your name (optional)"></label>
+
+    <label>Rating</label>
+   <div class="stars" id="stars">
+  <input type="radio" name="rating" value="5" id="r5">
+  <label for="r5">★</label>
+  <input type="radio" name="rating" value="4" id="r4">
+  <label for="r4">★</label>
+  <input type="radio" name="rating" value="3" id="r3">
+  <label for="r3">★</label>
+  <input type="radio" name="rating" value="2" id="r2">
+  <label for="r2">★</label>
+  <input type="radio" name="rating" value="1" id="r1">
+  <label for="r1">★</label>
+  </div>
+
+    <label>Food (optional)
+      <select id="rev-food"><option value="">--General--</option></select>
+    </label>
+
+    <label>Your feedback<textarea id="rev-comment" required placeholder="Tell us about your experience..."></textarea></label>
+
+    <div class="form-actions">
+      <button class="btn-primary" type="submit">Submit Feedback</button>
+      <span id="review-status" class="muted"></span>
+    </div>
+  </form>
+
+  <h3>Recent Reviews</h3>
+  <div id="reviews"></div>
+</section>
+{% endblock %}

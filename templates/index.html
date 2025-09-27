@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1>ZORVRY</h1>
+    <p class="muted"> Rise Create Conquer</p>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Popular Items</h2>
+  <div id="items" class="food-grid">
+    {% for food in foods %}
+    <div class="food-card">
+      <img src="{{ url_for('static', filename='images/' ~ food.image) }}" alt="{{ food.name }}">
+      <div class="food-info">
+        <h3>{{ food.name }}</h3>
+        <p class="muted">{{ food.description }}</p>
+        <p class="price">₹{{ food.price }} • {{ food.category }}</p>
+        <button class="add-to-cart" onclick="toggleCart(this, '{{ food.name }}', {{ food.price }})">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

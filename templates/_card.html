@@ -1,0 +1,9 @@
+<div class="card">
+  <h4>{{ food.name }}</h4>
+  <p class="desc">{{ food.description }}</p>
+  <p><span class="price">₹{{ food.price }}</span> • <span class="muted">{{ food.category }}</span></p>
+  <div class="actions">
+    <button class="btn-primary" onclick="addToCart({{ food.id }})">Add</button>
+    <button class="btn-secondary" onclick="reduceFromCart({{ food.id }})">−</button>
+  </div>
+</div>

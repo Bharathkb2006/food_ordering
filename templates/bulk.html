@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section narrow">
+  <h2>Bulk Orders & Wedding Catering</h2>
+  <p class="muted">For large events, weddings, corporate or bulk orders. Fill details and proceed to WhatsApp to speak directly with us.</p>
+
+  <form id="bulk-form" onsubmit="handleBulk(event)">
+    <label>Name <input id="bulk-name" required></label>
+    <label>Email <input id="bulk-email" type="email" required></label>
+    <label>Purpose <textarea id="bulk-purpose" placeholder="E.g. Wedding catering for 200 people on 12-Dec" required></textarea></label>
+
+    <div class="form-actions">
+      <button class="btn-primary" type="submit">Proceed to WhatsApp</button>
+      <span id="bulk-status" class="muted"></span>
+    </div>
+  </form>
+</section>
+
+<script>
+  const OWNER_WHATSAPP = "{{ owner_whatsapp }}"; // passed from Flask
+
+  async function handleBulk(event) {
+    event.preventDefault(); // prevent normal form submission
+
+    const name = document.getElementById('bulk-name').value.trim();
+    const email = document.getElementById('bulk-email').value.trim();
+    const purpose = document.getElementById('bulk-purpose').value.trim();
+    const status = document.getElementById('bulk-status');
+
+    if (!name || !email || !purpose) {
+      status.textContent = "Please fill all fields.";
+      return;
+    }
+
+    try {
+      // Send data to backend
+      const res = await fetch('/api/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, purpose })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        // Prepare WhatsApp message
+        const message = encodeURIComponent(
+          `Hello, I want to place a bulk order:\n\nName: ${name}\nEmail: ${email}\nPurpose: ${purpose}`
+        );
+        // Open WhatsApp in a new tab
+        window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${message}`, '_blank');
+
+        // Optional: clear the form
+        document.getElementById('bulk-form').reset();
+        status.textContent = "Redirecting to WhatsApp...";
+      } else {
+        status.textContent = data.error || "Failed to submit.";
+      }
+    } catch (err) {
+      console.error(err);
+      status.textContent = "Error submitting request.";
+    }
+  }
+</script>
+
+{% endblock %}
